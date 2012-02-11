@@ -31,6 +31,8 @@
 
 /* A 1.4 class used by TextComponentDemo.java. */
 
+package scratchpad;
+
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.Toolkit;

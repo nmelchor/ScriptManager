@@ -1,3 +1,6 @@
+package scratchpad;
+
+
 import java.awt.Dimension;
 
 import javax.swing.JDesktopPane;
