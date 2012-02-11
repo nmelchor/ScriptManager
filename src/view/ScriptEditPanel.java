@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,14 +8,15 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -23,6 +25,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -33,30 +36,44 @@ import controller.LoadScript;
 
 public class ScriptEditPanel extends JPanel
 {
+	
+	private boolean testing = true;
 
+	private TopPanelListener topPanelListener;
+	
 	private JTabbedPane parent;
 	private PicturePanel floorPlan;
 	private ScriptPane scriptPane;
 	private JPanel cuePanel;
 	private JTextPane stageDirections;
 	private JPanel navigationPanel;
+	private final JTextField searchBox;
+	
+	private final String nextPageString = "Next Page";
+	private final String prevPageString = "Previous Page";
+	private final String searchBoxString = "Search";
+	private final String addNoteString = "Add Note";
+	private final String addCueString = "Add Cue";
+	private final String addBlockingString = "Add Blocking";
+	private final String addTagString = "Add Tag";
+	
 	
 	private String textToDisplay;
 	
 	public ScriptEditPanel (JTabbedPane parent)
 	{
 		super();
-		System.out.println ("Loadin ScriptEditPanel");
 		this.parent = parent;
+		topPanelListener = new TopPanelListener();
 		floorPlan = new PicturePanel();
 		scriptPane = new ScriptPane();
 		cuePanel = new JPanel ();
 		stageDirections = new JTextPane ();
 		navigationPanel = new JPanel ();
+		searchBox = new JTextField();
 		buildLayout ();
 		
 	}
-	
 	
 	private void buildLayout ()
 	{
@@ -65,8 +82,7 @@ public class ScriptEditPanel extends JPanel
 		//cuepane-scriptpane-stageDirections
 		//navigationpanel
 		
-		setLayout (new BoxLayout (this, BoxLayout.X_AXIS));
-		cuePanel.setLayout(null);
+		setLayout (new BorderLayout());
 		
 		JScrollPane scroller = new JScrollPane (scriptPane);
         scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -86,21 +102,76 @@ public class ScriptEditPanel extends JPanel
         combo.setResizeWeight(.5);
         combo.setOneTouchExpandable(true);
         
-        combo.setPreferredSize(
-        		new Dimension ((int) getSize().getWidth(), (int)(getSize().getHeight()*.98)));
-        navigationPanel.setPreferredSize(
-        		new Dimension ((int) getSize().getWidth(), (int)(getSize().getHeight()*.01)));
-        navigationPanel.setPreferredSize(
-        		new Dimension ((int) getSize().getWidth(), (int)(50)));
+//        combo.setPreferredSize(
+//        		new Dimension ((int) getSize().getWidth(), (int)(getSize().getHeight()*.5)));
+//        navigationPanel.setPreferredSize(
+//        		new Dimension ((int) getSize().getWidth(), (int)(getSize().getHeight()*.5)));
         
-        add(combo);
-        add(Box.createVerticalGlue());
-        add(navigationPanel);
+
+        buildTopPanel();
+        
+        add(navigationPanel, BorderLayout.PAGE_START);
+        add(combo, BorderLayout.CENTER);
+        
 	}
 	
+	private void buildTopPanel ()
+	{
+		JButton button = new JButton();
+		button = new JButton (addTagString);
+		button.setActionCommand("tag");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(button);
+		button = new JButton (addBlockingString);
+		button.setActionCommand("blocking");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(button);
+		button = new JButton (addCueString);
+		button.setActionCommand("cue");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(button);
+		button = new JButton (addNoteString);
+		button.setActionCommand("note");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(button);
+		searchBox.setText(searchBoxString);
+		searchBox.setActionCommand("search");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(searchBox);
+		searchBox.setAlignmentX(1);
+		button = new JButton (nextPageString);
+		button.setActionCommand("next");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(button);
+		button = new JButton (prevPageString);
+		button.setActionCommand("prev");
+		searchBox.addKeyListener(topPanelListener);
+		navigationPanel.add(button);
+	
+		if (testing)
+		{
+			navigationPanel.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked (MouseEvent e)
+				{
+					System.out.println (navigationPanel.getSize());
+				}
+			});
+		}
+		else
+		{
+			throw new NullPointerException ();
+		}
+		
+	}
 	
 	private class ScriptPane extends JTextPane 
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1043205916846444609L;
 		private PopupMenuListener ml;
 		
 		public ScriptPane ()
@@ -150,6 +221,18 @@ public class ScriptEditPanel extends JPanel
 					} catch (BadLocationException e1) {
 						e1.printStackTrace();
 					}
+			        
+			        int start = getSelectionStart();
+			        int end = getSelectionEnd();
+			        String text = "";
+			        
+					try {
+						text = getText(start, end);
+					} catch (BadLocationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			        
 			        //Get description for cue
 			        String cueDescription = JOptionPane.showInputDialog (null, "Enter cue description",
 			        		JOptionPane.YES_NO_CANCEL_OPTION);
@@ -164,26 +247,24 @@ public class ScriptEditPanel extends JPanel
 			        cuePanel.add(label);
 			        cuePanel.repaint();
 			        //Remove text and replace it with blue version of itself
-			        String content = getText();
-			        int index = content.indexOf(getSelectedText(), 0);
-			        String removedText = getSelectedText();
-			        try {
-			        	getDocument().remove(0, 100);
-					} catch (BadLocationException e) {
-						// TODO Auto-generated catch block
-						System.out.println ("Pirates");
-						e.printStackTrace();
-					}
-			        SimpleAttributeSet sa = new SimpleAttributeSet();
-			        StyleConstants.setFontFamily(sa, "Monospace"); 
-			        StyleConstants.setItalic(sa, true);
-			        StyleConstants.setForeground(sa, Color.blue);
-			        try {
-						getDocument().insertString(index, removedText, sa);
-					} catch (BadLocationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//			        String content = getText();
+//			        try {
+//			        	getDocument().remove(start, end);
+//					} catch (BadLocationException e) {
+//						// TODO Auto-generated catch block
+//						System.out.println ("Pirates");
+//						e.printStackTrace();
+//					}
+//			        SimpleAttributeSet sa = new SimpleAttributeSet();
+//			        StyleConstants.setFontFamily(sa, "Monospace"); 
+//			        StyleConstants.setItalic(sa, true);
+//			        StyleConstants.setForeground(sa, Color.blue);
+//			        try {
+//						getDocument().insertString(start, text, sa);
+//					} catch (BadLocationException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 				}
 				else if (ac.equals("blocking"))
 				{
@@ -216,14 +297,37 @@ public class ScriptEditPanel extends JPanel
 	        }
 	    }
 
-	    public void displayPage (String text)
-	    {
-	    	
-	    }
 
 	}
 
-	
+	private class TopPanelListener implements ActionListener, KeyListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	
 	public void loadScript (String fileName) throws FileNotFoundException
 	{
