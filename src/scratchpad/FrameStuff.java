@@ -258,22 +258,22 @@ public class FrameStuff extends JFrame implements ActionListener,  CaretListener
 
 	private String readTextFromFile ()
 	{
-		StringBuffer fileText = new StringBuffer ();
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(new File("/Users/ashwinamit/Dropbox/CS Projects/TextEditor/ceaser"));
-		} catch (FileNotFoundException e) {
-			System.out.println ("error");
-			e.printStackTrace();
-		}
-		int i = 0;
-		while (i++ < 25)
-		{
-			fileText.append(scanner.nextLine());
-			fileText.append(System.getProperty("line.separator"));
-		}
-		return fileText.toString();
-//		return "apple";
+//		StringBuffer fileText = new StringBuffer ();
+//		Scanner scanner = null;
+//		try {
+//			scanner = new Scanner(new File("/Users/ashwinamit/Dropbox/CS Projects/TextEditor/ceaser"));
+//		} catch (FileNotFoundException e) {
+//			System.out.println ("error");
+//			e.printStackTrace();
+//		}
+//		int i = 0;
+//		while (i++ < 25)
+//		{
+//			fileText.append(scanner.nextLine());
+//			fileText.append(System.getProperty("line.separator"));
+//		}
+//		return fileText.toString();
+		return "apple";
 	}
 	
 	@Override

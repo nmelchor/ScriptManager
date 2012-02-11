@@ -33,10 +33,8 @@ public class PicturePanel extends JPanel{
 	
 	public void addPoints (Point p1, Point p2)
 	{
-		System.out.println ("Adding points");
 		if (lines.get(p1) == null)
 		{
-			System.out.println ("Adding to empty pointer");
 			lines.put(p1, new LinkedList<Point> ());
 		}
 		lines.get(p1).add(p2);
