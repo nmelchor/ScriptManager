@@ -34,10 +34,10 @@ public class MainFrame extends JFrame
 	{
 		
 		tabs = new JTabbedPane();
-		al = new MenuActionListener();
+		al = new FileMenuActionListener();
 		
 		initFrame();
-		buildMenuBar();
+		buildFileMenuBar();
 		
 		
 		getContentPane().add(tabs);
@@ -48,11 +48,11 @@ public class MainFrame extends JFrame
 		setSize (frameSize);
 		setName (name);
 		setDefaultCloseOperation (EXIT_ON_CLOSE);
-//		setExtendedState(JFrame.MAXIMIZED_BOTH);  //set it to be fullscreen on open
+		setExtendedState(JFrame.MAXIMIZED_BOTH);  //set it to be fullscreen on open
 
 	}
 	
-	private void buildMenuBar()
+	private void buildFileMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu ("File");
@@ -91,7 +91,7 @@ public class MainFrame extends JFrame
 		setJMenuBar(menuBar);
 	}
 	
-	private class MenuActionListener implements ActionListener
+	private class FileMenuActionListener implements ActionListener
 	{
 		@Override
 		public void actionPerformed (ActionEvent e)
