@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import model.Page;
+
 public class MainFrame extends JFrame 
 {
 
@@ -112,7 +114,7 @@ public class MainFrame extends JFrame
 			}
 			else if (ac.equals("load"))
 			{
-				load();
+//				load();
 			}
 			else if (ac.equals("load"))
 			{
@@ -121,19 +123,26 @@ public class MainFrame extends JFrame
 		}
 	}
 	
-	private void load ()
+//	private void load ()
+//	{
+//		ScriptEditPanel panel = new ScriptEditPanel (tabs);
+//		try
+//		{
+//			FileDialog fd = new FileDialog(this, "Load File");
+//			fd.setVisible(true);
+//			panel.loadScript(fd.getFile());
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			JOptionPane.showMessageDialog(null, "Unable to load file");	
+//		}
+//		tabs.add(panel);
+//	}
+	
+	public void loadPage (Page page)
 	{
-		ScriptEditPanel panel = new ScriptEditPanel (tabs);
-		try
-		{
-			FileDialog fd = new FileDialog(this, "Load File");
-			fd.setVisible(true);
-			panel.loadScript(fd.getFile());
-		}
-		catch (FileNotFoundException e)
-		{
-			JOptionPane.showMessageDialog(null, "Unable to load file");	
-		}
+		ScriptEditPanel panel = new ScriptEditPanel(tabs);
+		panel.displayPage(page);
 		tabs.add(panel);
 	}
 	

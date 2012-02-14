@@ -13,7 +13,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,10 +28,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
+import model.Page;
+import model.Prop;
+import model.Word;
 import scratchpad.PicturePanel;
-import controller.LoadScript;
 
 public class ScriptEditPanel extends JPanel
 {
@@ -59,6 +59,7 @@ public class ScriptEditPanel extends JPanel
 	
 	
 	private String textToDisplay;
+	private Script script;
 	
 	public ScriptEditPanel (JTabbedPane parent)
 	{
@@ -97,8 +98,8 @@ public class ScriptEditPanel extends JPanel
         JSplitPane split2 = new JSplitPane (JSplitPane.VERTICAL_SPLIT, floorPlan, stageDirections);
         split2.setResizeWeight(.5);
         split2.setOneTouchExpandable(true);
-        
         JSplitPane combo = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, split, split2);
+        
         combo.setResizeWeight(.5);
         combo.setOneTouchExpandable(true);
         
@@ -211,7 +212,9 @@ public class ScriptEditPanel extends JPanel
 				String ac = arg0.getActionCommand();
 				if (ac.equals("tag"))
 				{
-					
+					PropEditPanel pe = new PropEditPanel (new Prop(new Word("test")));
+					parent.add(pe);
+					parent.setSelectedComponent(pe);
 				}
 				else if (ac.equals("cue"))
 				{
@@ -329,14 +332,29 @@ public class ScriptEditPanel extends JPanel
 		
 	}
 	
-	public void loadScript (String fileName) throws FileNotFoundException
+//	public void loadScript (String fileName) throws FileNotFoundException
+//	{
+//		setName(fileName);
+//		textToDisplay = LoadScript.loadScript(fileName);
+//		try {
+//			scriptPane.getDocument().insertString(0, textToDisplay, new SimpleAttributeSet());
+//		} catch (BadLocationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public void displayPage (Page page)
 	{
-		setName(fileName);
-		textToDisplay = LoadScript.loadScript(fileName);
-		try {
-			scriptPane.getDocument().insertString(0, textToDisplay, new SimpleAttributeSet());
-		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
+		StringBuffer pageContents = new StringBuffer();
+		for (Word word: page.getWords())
+		{
+			pageContents.append(word.toString());
+		}
+		try{
+			scriptPane.getDocument().insertString(0, pageContents.toString(), new SimpleAttributeSet());
+		}
+		catch (BadLocationException e){
 			e.printStackTrace();
 		}
 	}
