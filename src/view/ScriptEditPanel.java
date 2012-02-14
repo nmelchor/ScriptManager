@@ -79,10 +79,6 @@ public class ScriptEditPanel extends JPanel
 	
 	private void buildLayout ()
 	{
-		//overall layout is
-		//cuepane-scriptpane-picturepanel
-		//cuepane-scriptpane-stageDirections
-		//navigationpanel
 		
 		setLayout (new BorderLayout());
 		
