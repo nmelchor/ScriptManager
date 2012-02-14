@@ -31,6 +31,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import model.Page;
 import model.Prop;
+import model.Script;
 import model.Word;
 import scratchpad.PicturePanel;
 

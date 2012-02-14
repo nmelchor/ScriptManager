@@ -19,7 +19,7 @@ public class HardCodedScript
 		Scanner fileScanner = null;
 		try {
 			fileScanner = new Scanner (new File 
-					("C:\\Users\\Amit\\Programming_Files\\Java\\ScriptManager\\LoremIpsum"));
+					("LoremIpsum"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -15,6 +15,7 @@ public class LoadScript
 		{
 			output.append(scanner.nextLine() + "\n");
 		}
+		System.out.println("Hey Ashwin");
 		return output.toString();
 	}
 
