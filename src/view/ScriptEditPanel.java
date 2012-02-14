@@ -31,6 +31,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import model.Page;
 import model.Prop;
+import model.Script;
 import model.Word;
 import scratchpad.PicturePanel;
 
@@ -78,10 +79,6 @@ public class ScriptEditPanel extends JPanel
 	
 	private void buildLayout ()
 	{
-		//overall layout is
-		//cuepane-scriptpane-picturepanel
-		//cuepane-scriptpane-stageDirections
-		//navigationpanel
 		
 		setLayout (new BorderLayout());
 		
