@@ -5,17 +5,15 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import model.Page;
+import testing.HardCodedScript;
 
 public class MainFrame extends JFrame 
 {
@@ -114,7 +112,8 @@ public class MainFrame extends JFrame
 			}
 			else if (ac.equals("load"))
 			{
-//				load();
+//				loadScript();
+				testHardCodedScript();
 			}
 			else if (ac.equals("load"))
 			{
@@ -123,27 +122,21 @@ public class MainFrame extends JFrame
 		}
 	}
 	
-//	private void load ()
-//	{
-//		ScriptEditPanel panel = new ScriptEditPanel (tabs);
-//		try
-//		{
-//			FileDialog fd = new FileDialog(this, "Load File");
-//			fd.setVisible(true);
-//			panel.loadScript(fd.getFile());
-//		}
-//		catch (FileNotFoundException e)
-//		{
-//			JOptionPane.showMessageDialog(null, "Unable to load file");	
-//		}
-//		tabs.add(panel);
-//	}
 	
-	public void loadPage (Page page)
+	public void loadScript ()
 	{
-		ScriptEditPanel panel = new ScriptEditPanel(tabs);
-		panel.displayPage(page);
-		tabs.add(panel);
+		
+	}
+	
+	public void testHardCodedScript ()
+	{
+		FileDialog fd = new FileDialog(this);
+		fd.setVisible(true);
+		String filePath = fd.getFile();
+		ScriptEditPanel se = new ScriptEditPanel(tabs, HardCodedScript.getScript());
+		se.setName(HardCodedScript.getScript().getName());
+		tabs.add(se);
+		
 	}
 	
 	

@@ -3,18 +3,18 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -35,12 +35,11 @@ import model.Script;
 import model.Word;
 import scratchpad.PicturePanel;
 
-public class ScriptEditPanel extends JPanel
+public class ScriptEditPanel extends JPanel implements ActionListener
 {
 	
 	private boolean testing = true;
 
-	private TopPanelListener topPanelListener;
 	
 	private JTabbedPane parent;
 	private PicturePanel floorPlan;
@@ -61,12 +60,13 @@ public class ScriptEditPanel extends JPanel
 	
 	private String textToDisplay;
 	private Script script;
+	private int displayedPage;
 	
-	public ScriptEditPanel (JTabbedPane parent)
+	public ScriptEditPanel (JTabbedPane parent, Script script)
 	{
 		super();
 		this.parent = parent;
-		topPanelListener = new TopPanelListener();
+		this.script = script;
 		floorPlan = new PicturePanel();
 		scriptPane = new ScriptPane();
 		cuePanel = new JPanel ();
@@ -74,7 +74,8 @@ public class ScriptEditPanel extends JPanel
 		navigationPanel = new JPanel ();
 		searchBox = new JTextField();
 		buildLayout ();
-		
+		displayedPage = 1;
+		displayPage(displayedPage);
 	}
 	
 	private void buildLayout ()
@@ -115,35 +116,42 @@ public class ScriptEditPanel extends JPanel
 	
 	private void buildTopPanel ()
 	{
+		
+		navigationPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		JButton button = new JButton();
 		button = new JButton (addTagString);
 		button.setActionCommand("tag");
-		searchBox.addKeyListener(topPanelListener);
+		button.addActionListener(this);
 		navigationPanel.add(button);
+		
 		button = new JButton (addBlockingString);
 		button.setActionCommand("blocking");
-		searchBox.addKeyListener(topPanelListener);
+		button.addActionListener(this);
 		navigationPanel.add(button);
+		
 		button = new JButton (addCueString);
 		button.setActionCommand("cue");
-		searchBox.addKeyListener(topPanelListener);
+		button.addActionListener(this);
 		navigationPanel.add(button);
+		
 		button = new JButton (addNoteString);
 		button.setActionCommand("note");
-		searchBox.addKeyListener(topPanelListener);
+		button.addActionListener(this);
 		navigationPanel.add(button);
+		
 		searchBox.setText(searchBoxString);
 		searchBox.setActionCommand("search");
-		searchBox.addKeyListener(topPanelListener);
 		navigationPanel.add(searchBox);
-		searchBox.setAlignmentX(1);
+		
 		button = new JButton (nextPageString);
 		button.setActionCommand("next");
-		searchBox.addKeyListener(topPanelListener);
+		button.addActionListener(this);
 		navigationPanel.add(button);
+		
 		button = new JButton (prevPageString);
 		button.setActionCommand("prev");
-		searchBox.addKeyListener(topPanelListener);
+		button.addActionListener(this);
 		navigationPanel.add(button);
 	
 		if (testing)
@@ -162,6 +170,11 @@ public class ScriptEditPanel extends JPanel
 			throw new NullPointerException ();
 		}
 		
+	}
+	
+	private void displayPage (int pageNumber)
+	{
+		displayPage(script.getPages().get(pageNumber));
 	}
 	
 	private class ScriptPane extends JTextPane 
@@ -300,35 +313,6 @@ public class ScriptEditPanel extends JPanel
 
 	}
 
-	private class TopPanelListener implements ActionListener, KeyListener
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void keyPressed(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	
 //	public void loadScript (String fileName) throws FileNotFoundException
 //	{
 //		setName(fileName);
@@ -360,6 +344,17 @@ public class ScriptEditPanel extends JPanel
 	public void paintComponent (Graphics g)
 	{
 		super.paintComponent(g);
+	}
+	
+	
+	@Override
+	public void actionPerformed (ActionEvent ae)
+	{
+		System.out.println ("action performed");
+		if (ae.getActionCommand().equals("next"))
+		{
+			displayPage(++displayedPage);
+		}
 	}
 	
 	

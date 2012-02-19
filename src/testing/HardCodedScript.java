@@ -1,47 +1,38 @@
 package testing;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import view.MainFrame;
-
 import model.Page;
-import model.Scene;
+import model.Script;
 import model.Word;
 
 public class HardCodedScript 
 {
 	
-	public static void main (String [] args)
+	private static final String [] words = {"apple", "ics", "teacher", "lakers", "theater", "food", "starcraft", 
+			"oranges", "kobe", "discrete", "netflix", "enter", "say", "bye", "thunder", "proclaimed",
+	};
+	
+	public static Script getScript ()
 	{
-		Scanner fileScanner = null;
-		try {
-			fileScanner = new Scanner (new File 
-					("LoremIpsum"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		ArrayList <Page> pages = new ArrayList <Page> ();
-		Scene scene = new Scene ();
-		for (int i = 0; i < 9; i++)
+		Script s1 = new Script ("Test Production");
+		Page page = new Page ();
+		for (int i = 1; i <= 100; i++)
 		{
-			pages.add(new Page());
-			pages.get(i).setPageNumber(i);
-			for (int j = 0; j < 20; j++)
+			page = new Page ();
+			page.setPageNumber(i);
+			for (int j = 0; j < 500; j++)
 			{
-				System.out.println (i + " and " + j);
-				pages.get(i).addWord(new Word(fileScanner.next()));
+				page.addWord(new Word(words
+						[(int)((Math.random() * words.length))]));
+				page.addWord (new Word(" "));
+				if (j%50 == 0)
+				{
+					page.addWord(new Word("\n"));
+				}
 			}
-			scene.addPage(pages.get(i));
+			s1.addPage(page);
 		}
-		MainFrame f = new MainFrame();
-		f.loadPage(pages.get(0));
-		f.setVisible(true);
 		
+		return s1;
 	}
 
 }
