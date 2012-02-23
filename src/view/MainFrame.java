@@ -25,7 +25,7 @@ public class MainFrame extends JFrame
 		MainFrame f = new MainFrame();
 		f.setVisible(true);
 	}
-	
+
 	private final String name = "Script Manager";
 	private final Dimension frameSize = new Dimension (800, 600);
 	
@@ -40,7 +40,6 @@ public class MainFrame extends JFrame
 		
 		initFrame();
 		buildFileMenuBar();
-		
 		
 		getContentPane().add(tabs);
 	}
@@ -88,8 +87,16 @@ public class MainFrame extends JFrame
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 		
+		JMenu system = new JMenu ("System");
+		JMenuItem systemItem = new JMenuItem ("Calendar");
+		systemItem.setActionCommand("calendar");
+		systemItem.addActionListener(al);
+		system.add(systemItem);
+		systemItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 		
 		menuBar.add(menu);
+		menuBar.add(system);
 		setJMenuBar(menuBar);
 	}
 	
@@ -120,6 +127,10 @@ public class MainFrame extends JFrame
 			{
 				
 			}
+			else if(ac.equals("calendar"))
+			{
+				openCalendar();
+			}
 		}
 	}
 	
@@ -145,7 +156,10 @@ public class MainFrame extends JFrame
 		panel.displayPage(page);
 		tabs.add(panel);
 	}
-	
-	
+
+	public void openCalendar() {
+		CalendarEditPanel panel = new CalendarEditPanel(tabs);
+		tabs.add(panel);
+	}	
 	
 }
