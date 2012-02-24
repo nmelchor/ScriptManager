@@ -77,7 +77,7 @@ public class CalendarEditPanel extends JPanel{
         scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         JSplitPane split = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, calendar, scroller);
-        split.setResizeWeight(.5);
+        split.setResizeWeight(.3);
         
         createEvent(createEvent);
         
@@ -108,7 +108,7 @@ public class CalendarEditPanel extends JPanel{
 		 d = new JDialog();
          d.setModal(true);
         
-        calendar2.setPreferredSize(new Dimension(1200, 1200));
+        //calendar2.setPreferredSize(new Dimension(4300, 1200));
         String[] header = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat" };
        
         for (int x = 0; x < button.length; x++) {
@@ -122,6 +122,9 @@ public class CalendarEditPanel extends JPanel{
                                 public void actionPerformed(ActionEvent ae) {
                                         day = button[selection].getActionCommand();
                                         if(prevSelection != 0)
+                                        	 if (((prevSelection+1)%7) == 1 || ((prevSelection+1)%7) == 0) //Week-end
+                                             	button[prevSelection].setBackground(new Color(255, 220, 220));    
+                                        else	
                                         	button[prevSelection].setBackground(new Color(255,255,255));                                      
                                         button[selection].setBackground(new Color(184,207,229));
                                         prevSelection = selection;
